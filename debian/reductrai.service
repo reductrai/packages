@@ -1,0 +1,39 @@
+[Unit]
+Description=ReductrAI - AI SRE Proxy
+Documentation=https://docs.reductrai.com
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=reductrai
+Group=reductrai
+WorkingDirectory=/var/lib/reductrai
+ExecStartPre=/usr/bin/reductrai check-config
+ExecStart=/usr/bin/reductrai start --config /etc/reductrai/config.yaml
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/usr/bin/reductrai stop
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=reductrai
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/reductrai /var/log/reductrai
+
+# Resource limits
+LimitNOFILE=65535
+LimitNPROC=4096
+
+# Environment
+Environment="REDUCTRAI_HOME=/var/lib/reductrai"
+Environment="REDUCTRAI_LOG_DIR=/var/log/reductrai"
+EnvironmentFile=-/etc/default/reductrai
+
+[Install]
+WantedBy=multi-user.target
