@@ -61,8 +61,8 @@ pushd "$pkg_dir" >/dev/null
 
 cat > .env <<EOF
 REDUCTRAI_LICENSE_KEY=${REDUCTRAI_LICENSE_KEY:-RF-DEMO-2025}
-DATADOG_API_KEY=${DATADOG_API_KEY:-demo-key}
-LOCAL_LLM_ENDPOINT=http://localhost:11434
+FORWARD_TO=${FORWARD_TO:-}
+LOCAL_LLM_ENDPOINT=${LOCAL_LLM_ENDPOINT:-http://localhost:11434}
 EOF
 
 ./bin/start.sh >/dev/null 2>&1 &
